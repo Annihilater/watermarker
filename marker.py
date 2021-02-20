@@ -14,32 +14,32 @@ TTF_FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), TTF_FONT)
 
 
 def add_mark(imagePath, mark, args):
-    '''
+    """
     添加水印，然后保存图片
-    '''
+    """
     im = Image.open(imagePath)
 
+    name = os.path.basename(imagePath)
     image = mark(im)
     if image:
-        name = os.path.basename(imagePath)
         if not os.path.exists(args.out):
             os.mkdir(args.out)
 
         new_name = os.path.join(args.out, name)
         if os.path.splitext(new_name)[1] != '.png':
             image = image.convert('RGB')
-        image.save(new_name, quality=args.quality)
 
+        image.save(new_name, quality=args.quality)
         print(name + " Success.")
     else:
         print(name + " Failed.")
 
 
 def set_opacity(im, opacity):
-    '''
+    """
     设置水印透明度
-    '''
-    assert opacity >= 0 and opacity <= 1
+    """
+    assert 0 <= opacity <= 1
 
     alpha = im.split()[3]
     alpha = ImageEnhance.Brightness(alpha).enhance(opacity)
@@ -48,7 +48,7 @@ def set_opacity(im, opacity):
 
 
 def crop_image(im):
-    '''裁剪图片边缘空白'''
+    """裁剪图片边缘空白"""
     bg = Image.new(mode='RGBA', size=im.size)
     diff = ImageChops.difference(im, bg)
     del bg
@@ -59,9 +59,9 @@ def crop_image(im):
 
 
 def gen_mark(args):
-    '''
+    """
     生成mark图片，返回添加水印的函数
-    '''
+    """
     # 字体宽度
     width = len(args.mark) * args.size
 
@@ -84,7 +84,7 @@ def gen_mark(args):
     set_opacity(mark, args.opacity)
 
     def mark_im(im):
-        ''' 在im图片上添加水印 im为打开的原图'''
+        """ 在im图片上添加水印 im为打开的原图"""
 
         # 计算斜边长度
         c = int(math.sqrt(im.size[0]*im.size[0] + im.size[1]*im.size[1]))
