@@ -87,7 +87,7 @@ def gen_mark(args):
         """ 在im图片上添加水印 im为打开的原图"""
 
         # 计算斜边长度
-        c = int(math.sqrt(im.size[0]*im.size[0] + im.size[1]*im.size[1]))
+        c = int(math.sqrt(im.size[0] * im.size[0] + im.size[1] * im.size[1]))
 
         # 以斜边长度为宽高创建大图（旋转后大图才足以覆盖原图）
         mark2 = Image.new(mode='RGBA', size=(c, c))
@@ -96,7 +96,7 @@ def gen_mark(args):
         y, idx = 0, 0
         while y < c:
             # 制造x坐标错位
-            x = -int((mark.size[0] + args.space)*0.5*idx)
+            x = -int((mark.size[0] + args.space) * 0.5 * idx)
             idx = (idx + 1) % 2
 
             while x < c:
@@ -112,7 +112,7 @@ def gen_mark(args):
         if im.mode != 'RGBA':
             im = im.convert('RGBA')
         im.paste(mark2,  # 大图
-                 (int((im.size[0]-c)/2), int((im.size[1]-c)/2)),  # 坐标
+                 (int((im.size[0] - c) / 2), int((im.size[1] - c) / 2)),  # 坐标
                  mask=mark2.split()[3])
         del mark2
         return im
@@ -158,3 +158,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # python marker.py -f ./input/test.png -m 添加水印
